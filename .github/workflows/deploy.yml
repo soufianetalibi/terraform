@@ -1,0 +1,42 @@
+name: CI-CD-Azure
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+
+  ci:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Test app
+        run: python app/app.py
+
+      - name: Build step
+        run: echo "build ok"
+
+
+  cd:
+    needs: ci
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Login Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Terraform init
+        run: |
+          cd terraform
+          terraform init
+
+      - name: Terraform apply
+        run: |
+          cd terraform
+          terraform apply -auto-approve
