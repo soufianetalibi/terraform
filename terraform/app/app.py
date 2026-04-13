@@ -1,5 +1,5 @@
 from azure.identity import DefaultAzureCredential
-from azure.mgmt.resource import SubscriptionClient
+from azure.mgmt.subscription import SubscriptionClient
 import sys
 
 def main():
@@ -10,13 +10,13 @@ def main():
 
         subs = list(client.subscriptions.list())
 
-        if len(subs) > 0:
-            print("✅ Accès à Azure OK")
+        if subs:
+            print("✅ Accès Azure OK")
         else:
-            print("⚠️ Connecté mais aucune subscription trouvée")
+            print("⚠️ Aucune subscription trouvée")
 
     except Exception as e:
-        print(f"❌ Erreur d'authentification Azure: {e}")
+        print(f"❌ Erreur Azure: {e}")
         sys.exit(1)
 
 if __name__ == "__main__":
