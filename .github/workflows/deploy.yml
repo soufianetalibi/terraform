@@ -10,7 +10,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Install dependencies
+        run: pip install azure-identity azure-mgmt-resource
 
       - name: Test app
         run: python terraform/app/app.py
@@ -18,13 +26,12 @@ jobs:
       - name: Build step
         run: echo "build ok"
 
-
   cd:
     needs: ci
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Login Azure
         uses: azure/login@v1
