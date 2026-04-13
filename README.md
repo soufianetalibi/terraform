@@ -60,4 +60,4 @@ terraform init : initialisation
 terraform plan : prévisualiser les changements
 terraform apply : appliquer les changements
 
-
+--> le workflow permet de lancer toutes ces étapes.
