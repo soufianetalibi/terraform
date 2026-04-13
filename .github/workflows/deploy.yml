@@ -13,7 +13,7 @@ jobs:
       - uses: actions/checkout@v3
 
       - name: Test app
-        run: python terraform/terraform/app/app.py
+        run: python terraform/app/app.py
 
       - name: Build step
         run: echo "build ok"
