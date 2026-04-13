@@ -47,3 +47,17 @@ repo/
 ✔ Infra créée
 ✔ Pipeline automatique
 ✔ Repo prêt pour projet pro
+
+===========================================
+je peux lancer terraform depuis : 
+-Repo github via un workflow
+-depuis une machine local linux ou windows
+-depuis un conteneur
+
+cmd : 
+
+terraform init : initialisation 
+terraform plan : prévisualiser les changements
+terraform apply : appliquer les changements
+
+
