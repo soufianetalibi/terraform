@@ -1,22 +1,16 @@
-from azure.identity import DefaultAzureCredential
-from azure.mgmt.subscription import SubscriptionClient
+from azure.identity import AzureCliCredential
 import sys
 
 def main():
     try:
-        credential = DefaultAzureCredential()
+        credential = AzureCliCredential()
 
-        client = SubscriptionClient(credential)
+        token = credential.get_token("https://management.azure.com/.default")
 
-        subs = list(client.subscriptions.list())
-
-        if subs:
-            print("✅ Accès Azure OK")
-        else:
-            print("⚠️ Aucune subscription trouvée")
+        print("✅ Auth Azure OK")
 
     except Exception as e:
-        print(f"❌ Erreur Azure: {e}")
+        print(f"❌ Auth failed: {e}")
         sys.exit(1)
 
 if __name__ == "__main__":
