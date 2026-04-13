@@ -1,11 +1,13 @@
+from azure.identity import DefaultAzureCredential
+from azure.mgmt.resource import SubscriptionClient
+import sys
+
 def main():
     try:
-        # Authentification automatique via AZURE_CREDENTIALS (GitHub Actions)
         credential = DefaultAzureCredential()
 
         client = SubscriptionClient(credential)
 
-        # On essaie de récupérer au moins une subscription
         subs = list(client.subscriptions.list())
 
         if len(subs) > 0:
