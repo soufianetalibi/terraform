@@ -37,48 +37,42 @@ jobs:
       - name: Build step
         run: echo "build ok"
 
+ cd:
+  needs: ci
+  runs-on: ubuntu-latest
 
-  cd:
-    needs: ci
-    runs-on: ubuntu-latest
+  steps:
+    - uses: actions/checkout@v4
 
-    steps:
-      - uses: actions/checkout@v4
+    - name: Azure Login
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: Azure Login
-        uses: azure/login@v1
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
+    - name: Set Terraform Azure Auth Mode
+      run: echo "ARM_USE_AZUREAD=true" >> $GITHUB_ENV
 
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v3
-        with:
-          terraform_version: 1.6.6
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v3
+      with:
+        terraform_version: 1.6.6
 
-      # ✅ CRITICAL FIX: Pass credentials to Terraform
-      - name: Set Terraform Azure Credentials
-        run: |
-          echo "ARM_CLIENT_ID=${{ fromJson(secrets.AZURE_CREDENTIALS).clientId }}" >> $GITHUB_ENV
-          echo "ARM_CLIENT_SECRET=${{ fromJson(secrets.AZURE_CREDENTIALS).clientSecret }}" >> $GITHUB_ENV
-          echo "ARM_SUBSCRIPTION_ID=${{ fromJson(secrets.AZURE_CREDENTIALS).subscriptionId }}" >> $GITHUB_ENV
-          echo "ARM_TENANT_ID=${{ fromJson(secrets.AZURE_CREDENTIALS).tenantId }}" >> $GITHUB_ENV
+    - name: Terraform init
+      working-directory: terraform
+      run: terraform init
 
-      - name: Terraform init
-        working-directory: terraform
-        run: terraform init
+    - name: Terraform fmt
+      working-directory: terraform
+      run: terraform fmt -check
 
-      - name: Terraform fmt
-        working-directory: terraform
-        run: terraform fmt -check
+    - name: Terraform validate
+      working-directory: terraform
+      run: terraform validate
 
-      - name: Terraform validate
-        working-directory: terraform
-        run: terraform validate
+    - name: Terraform plan
+      working-directory: terraform
+      run: terraform plan
 
-      - name: Terraform plan
-        working-directory: terraform
-        run: terraform plan
-
-      - name: Terraform apply
-        working-directory: terraform
-        run: terraform apply -auto-approve
+    - name: Terraform apply
+      working-directory: terraform
+      run: terraform apply -auto-approve
