@@ -20,13 +20,13 @@ jobs:
       - name: Install dependencies
         run: pip install azure-identity
 
-      - name: Azure Login (CLI)
-        run: |
-          curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
-          az login --service-principal \
-            -u ${{ secrets.CLIENT_ID }} \
-            -p ${{ secrets.CLIENT_SECRET }} \
-            --tenant ${{ secrets.TENANT_ID }}
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Test Azure auth
+        run: az account show
 
       - name: Test app
         run: python terraform/app/app.py
