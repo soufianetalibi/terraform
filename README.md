@@ -1,5 +1,9 @@
 # terraform
-workflow .yml qui appelle du code terraform pour créer une infra sur azure
+workflow .yml permet d'executer deux étapes CI et CD : 
+
+1- on push : l'execute un script python qui test la connexion à azure
+
+2- si l'étape 1 est OK, j'execute le code terraform qui permet de déployer ce qui est défini dans main.tf et mettre à jour le fichier tfstate présent sur un storage account azure.
 
 ======
 
