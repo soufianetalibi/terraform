@@ -1,4 +1,4 @@
-name: CI-CD-Azure
+name: Terraform-Azure
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
 
 jobs:
 
-  ci:
+  TEST-via-python:
     runs-on: ubuntu-latest
 
     steps:
@@ -38,8 +38,8 @@ jobs:
         run: echo "build ok"
 
 
-  cd:
-    needs: ci
+  Terraform-deploy:
+    needs: TEST-via-python
     runs-on: ubuntu-latest
 
     steps:
